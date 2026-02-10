@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home - Solar Panel Cleaning</title>
+
+  <style>
+    :root{
+      --blue1:#1a86c8;
+      --blue3:#0b5f9a;
+      --yellow:#f6c10a;
+      --cardRadius:18px;
+      --shadow: 0 10px 26px rgba(0,0,0,.18);
+      --shadowSoft: 0 8px 18px rgba(0,0,0,.14);
+      --bg:#ffffff;
+      --text:#0b1b2b;
+      --muted:#6b7b8c;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .wrap{
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 18px 16px 28px;
+    }
+
+    .title{
+      text-align:center;
+      font-size: 30px;
+      font-weight: 800;
+      color:#000;
+      margin: 10px 0 16px;
+    }
+
+    /* ✅ VIDEO CARD (same frame feel like your photo) */
+    .video-card{
+      border-radius: var(--cardRadius);
+      overflow:hidden;
+      box-shadow: var(--shadowSoft);
+      background: #000;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .video-frame{
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background:#000;
+    }
+    @media (min-width: 420px){
+      .video-frame{ height: 240px; }
+    }
+
+    .video-frame video,
+    .video-frame iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+      background:#000;
+    }
+
+    .video-frame video{
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      background: rgba(0,0,0,.25);
+      color:#fff;
+      font-weight: 800;
+      z-index: 5;
+      user-select:none;
+      cursor:pointer;
+      padding: 14px;
+      text-align:center;
+    }
+    .overlay.hidden{ display:none; }
+
+    .play-circle{
+      width:54px;
+      height:54px;
+      border-radius:999px;
+      background: rgba(255,255,255,.22);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      backdrop-filter: blur(2px);
+      flex: 0 0 auto;
+    }
+    .play-triangle{
+      width: 0; height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 16px solid #fff;
+      margin-left: 3px;
+    }
+
+    .small-note{
+      margin: 8px 2px 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* SERVICE CARD */
+    .service-card{
+      margin-top: 16px;
+      border-radius: var(--cardRadius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background: #000;
+      padding: 18px 16px 16px;
+      position: relative;
+      min-height: 170px; /* increased so 2 buttons fit nicely */
+    }
+
+    .service-title{
+      color:#f6c10a;
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0;
+    }
+    .price-line{
+      margin: 8px 0 0;
+      font-size: 18px;
+      font-weight: 800;
+      color:#f6c10a;
+    }
+    .price{
+      color: var(--yellow);
+      font-size: 22px;
+      font-weight: 900;
+      margin-left: 6px;
+    }
+
+    .amc{
+      position:absolute;
+      left: 16px;
+      bottom: 14px;
+      color: var(--yellow);
+      font-weight: 900;
+      letter-spacing: .6px;
+      font-size: 16px;
+    }
+
+    /* ✅ BUTTON GROUP (Book Now + Track My Query) */
+    .btn-group{
+      position:absolute;
+      right: 16px;
+      bottom: 16px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+      flex-wrap: wrap;
+      max-width: 65%;
+    }
+
+    .pill-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background: var(--yellow);
+      color:#0b2540;
+      font-weight: 900;
+      padding: 12px 16px;
+      border-radius: 999px;
+      text-decoration:none;
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
+      transition: transform .12s ease;
+      user-select:none;
+      white-space: nowrap;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+    .pill-btn:active{ transform: scale(.98); }
+
+    /* make "Track My Query" slightly smaller on very small screens */
+    @media (max-width: 360px){
+      .pill-btn{ padding: 10px 14px; font-size: 13px; }
+      .btn-group{ max-width: 70%; }
+    }
+
+    .estimate-card{
+      margin-top: 14px;
+      border-radius: var(--cardRadius);
+      overflow:hidden;
+      box-shadow: var(--shadowSoft);
+      background: #000;
+      padding: 16px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      text-decoration:none;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .estimate-text{
+      color:#fff;
+      font-size: 18px;
+      font-weight: 650;
+    }
+    .estimate-text span{
+      color: var(--yellow);
+      font-weight: 900;
+      margin-left: 4px;
+    }
+
+    .arrow{
+      color:#fff;
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="title">Home</div>
+
+    <!-- ✅ VIDEO AREA -->
+    <div class="video-card">
+      <div class="video-frame">
+        <div id="tapOverlay" class="overlay hidden" onclick="userTapPlay()">
+          <div class="play-circle"><div class="play-triangle"></div></div>
+          <div>
+            Video auto-play block ho gaya.<br/>
+            <span style="font-weight:700; opacity:.95;">Tap karke play karein</span>
+          </div>
+        </div>
+
+        <video
+          id="heroVideo"
+          autoplay
+          muted
+          playsinline
+          loop
+          preload="auto"
+        >
+          <source src="IMG_7949_exact.mp4" type="video/mp4" />
+        </video>
+
+        <iframe
+          id="driveFallback"
+          src="about:blank"
+          allow="autoplay; fullscreen"
+          title="Home Video"
+          style="display:none;">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- SERVICE CARD -->
+    <div class="service-card">
+      <h2 class="service-title">Solar Panel Cleaning Service</h2>
+      <div class="price-line">@ <span class="price">₹208*</span></div>
+
+      <!-- ✅ Two buttons -->
+      <div class="btn-group">
+        <!-- Book Now -->
+        <a class="pill-btn"
+           href="https://dmedsquaresolar.github.io/CustomersQuerys/"
+           target="_blank"
+           rel="noopener noreferrer">
+          BOOK NOW
+        </a>
+
+        <!-- ✅ Track My Query (paste your GitHub URL here) -->
+        <a id="trackBtn" class="pill-btn"
+           href="https://dmedsquaresolar.github.io/customertrack/"
+           target="_blank"
+           rel="noopener noreferrer">
+          Track My Query
+        </a>
+      </div>
+
+      <div class="amc">AMC AVAILABLE</div>
+    </div>
+
+    <!-- ✅ Get Estimate (Clickable) -->
+    <a class="estimate-card" id="estimateLink" href="https://dmedsquaresolar.github.io/estimate/" target="_blank" rel="noopener noreferrer">
+      <div class="estimate-text">want to book later? <span>Get Estimate</span></div>
+      <div class="arrow">›</div>
+    </a>
+  </div>
+
+  <script>
+    const FILE_ID = "1ukopai3pxbSmOxekv0UOvPZNcQLOWYNs";
+    const TRACK_MY_QUERY_LINK = "https://dmedsquaresolar.github.io/customertrack/"; // ✅ Track page URL
+
+    // ✅ paste your GitHub Estimate page URL here
+    const ESTIMATE_PAGE_URL = "https://dmedsquaresolar.github.io/estimate/"; // مثال: "https://yourgithubusername.github.io/estimate/"
+
+    const video = document.getElementById("heroVideo");
+    const iframe = document.getElementById("driveFallback");
+    const overlay = document.getElementById("tapOverlay");
+
+    // Set Track button link
+    const trackBtn = document.getElementById("trackBtn");
+    if (TRACK_MY_QUERY_LINK && TRACK_MY_QUERY_LINK !== "TRACK_MY_QUERY_LINK") {
+      trackBtn.href = TRACK_MY_QUERY_LINK;
+    }
+
+    // ✅ Set Estimate link
+    const estimateLink = document.getElementById("estimateLink");
+    if (ESTIMATE_PAGE_URL && ESTIMATE_PAGE_URL !== "https://dmedsquaresolar.github.io/estimate/") {
+      estimateLink.href = ESTIMATE_PAGE_URL;
+    }
+
+    const drivePreviewSrc = `https://drive.google.com/file/d/${FILE_ID}/preview?autoplay=1&mute=1`;
+
+    function showFallbackIframe(){
+      video.style.display = "none";
+      iframe.style.display = "block";
+      iframe.src = drivePreviewSrc;
+
+      setTimeout(() => overlay.classList.remove("hidden"), 1200);
+    }
+
+    async function tryAutoplay(){
+      try{
+        await video.play();
+        overlay.classList.add("hidden");
+      }catch(e){
+        overlay.classList.remove("hidden");
+      }
+    }
+
+    function userTapPlay(){
+      overlay.classList.add("hidden");
+      video.play().catch(() => {
+        showFallbackIframe();
+      });
+    }
+
+    video.addEventListener("error", () => {
+      showFallbackIframe();
+    });
+
+    window.addEventListener("load", () => {
+      setTimeout(tryAutoplay, 200);
+
+      setTimeout(() => {
+        const notPlaying = video.paused || video.currentTime === 0;
+        if (notPlaying) overlay.classList.remove("hidden");
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
